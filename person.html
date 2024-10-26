@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>罗睿琦个人网站</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        header {
+            padding: 20px 0;
+        }
+
+        header h1 {
+            margin: 0;
+            color: #000;
+        }
+
+        .logo {
+            width: 100px;
+            /* Adjust the width as needed */
+            display: block;
+            /* Make the image block level to be centered */
+            margin: 20px auto;
+            /* Center the image */
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            padding: 20px 0;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            margin: 0 15px;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .projects {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        .project {
+            background: #f2f2f2;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease-in-out;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .project:hover {
+            transform: translateY(-5px);
+        }
+
+        .project h2 {
+            margin: 10px 0;
+            color: #000;
+        }
+
+        .project p {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 600px;
+            height: 80%;
+            background-color: rgba(0, 0, 0, 0);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+            /* Adjust margin for spacing */
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .modal-images {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px 0;
+            gap: 10px;
+            /* Adjusted gap for larger spacing between images */
+        }
+
+        .modal-image {
+            max-width: 100%;
+            /* Adjusted size to fit within the modal */
+            border-radius: 5px;
+        }
+
+        .image-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .platform-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        .platform-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease-in-out;
+            color: #333;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .highlighted-platform-button {
+            background-color: #f0f0f0;
+            color: #000;
+            border: 1px solid #333;
+        }
+
+        .platform-button:active {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>罗睿琦</h1>
+            <img src="image/BorChain.png" alt="Logo" class="logo" />
+        </div>
+    </header>
+    <nav>
+        <div class="container">
+            <a href="#projects">这一切都是命运石之门的选择</a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="platform-buttons">
+            <button class="platform-button" onclick="showComputer()">
+                <img src="image/computer.svg" alt="电脑端" style="width: 40px; height: 40px;">
+            </button>
+            <button class="platform-button" onclick="showAndroid()">
+                <img src="image/phone.svg" alt="安卓端" style="width: 40px; height: 40px;">
+            </button>
+            <button class="platform-button" onclick="showWeb()">
+                <img src="image/web.svg" alt="网页端" style="width: 40px; height: 40px;">
+            </button>
+        </div>
+        <section class="projects"></section>
+        <button id="backButton" style="display: none; margin: 20px auto;">返回上一级</button>
+    </div>
+
+    <!-- Modals -->
+    <div id="cModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>C 语言</h2>
+            <p>关于 C 语言的相关内容。</p>
+            <div class="action-buttons">
+                <button>暂无相关按钮</button>
+            </div>
+        </div>
+    </div>
+    <div id="javaModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Java</h2>
+            <p>关于 Java 的相关内容。</p>
+            <div class="action-buttons">
+                <button>暂无相关按钮</button>
+            </div>
+        </div>
+    </div>
+    <div id="pythonModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Python</h2>
+            <p>关于 Python 的相关内容。</p>
+            <div class="action-buttons">
+                <button>暂无相关按钮</button>
+            </div>
+        </div>
+    </div>
+    <div id="unityModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Unity</h2>
+            <p>关于 Unity 的相关内容。</p>
+            <div class="action-buttons">
+                <button onclick="openModal('foxUnityModal')">Fox Jumping Game</button>
+                <button onclick="openModal('universeUnityModal')">Universe</button>
+                <button onclick="openModal('3DForstGameModal')">3DForstGame</button>
+            </div>
+        </div>
+    </div>
+    <div id="cModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>C 语言</h2>
+            <p>关于 C 语言的相关内容。</p>
+            <div class="action-buttons">
+                <button>暂无相关按钮</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="javaModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Java</h2>
+            <p>关于 Java 的相关内容。</p>
+            <div class="action-buttons">
+                <button>暂无相关按钮</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="pythonModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Python</h2>
+            <p>关于 Python 的相关内容。</p>
+            <div class="action-buttons">
+                <button>暂无相关按钮</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="unityModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Unity</h2>
+            <p>关于 Unity 的相关内容。</p>
+            <div class="action-buttons">
+                <button onclick="openModal('foxUnityModal')">Fox Jumping Game</button>
+                <button onclick="openModal('universeUnityModal')">Universe</button>
+                <button onclick="openModal('3DForstGameModal')">3DForstGame</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="foxUnityModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Fox Jumping Game</h2>
+            <p>SunnyLand三部曲(made of C# and Unity)</p>
+            <div class="modal-images">
+                <div class="image-row">
+                    <img src="image/classic.png" alt="经典主题" class="modal-image" />
+                    <h3>经典主题</h3>
+                </div>
+            </div>
+            <div class="modal-images">
+                <div class="image-row">
+                    <img src="image/forest.png" alt="森林主题" class="modal-image" />
+                    <h3>森林主题</h3>
+                </div>
+            </div>
+            <div class="modal-images">
+                <div class="image-row">
+                    <img src="image/snow.png" alt="雪地主题" class="modal-image" />
+                    <h3>雪地主题</h3>
+                </div>
+            </div>
+            <div class="modal-images">
+                <div class="image-row">
+                    <img src="image/simple_setup_level.png" alt="简单设置关卡" class="modal-image" />
+                    <p>初始地图</p>
+                </div>
+                <div class="image-row">
+                    <img src="image/back.png" alt="背景" class="modal-image" />
+                    <p>背景</p>
+                </div>
+            </div>
+            <h3>角色展示</h3>
+            <div class="modal-images">
+                <div class="image-row">
+                    <img src="image/player-idle.png" alt="角色静止" class="modal-image" />
+                    <p>角色静止</p>
+                </div>
+                <div class="image-row">
+                    <img src="image/player-run.png" alt="角色奔跑" class="modal-image" />
+                    <p>角色奔跑</p>
+                </div>
+                <div class="image-row">
+                    <img src="image/player-crouch.png" alt="角色蹲下" class="modal-image" />
+                    <p>角色蹲下</p>
+                </div>
+                <div class="image-row">
+                    <img src="image/player-jump.png" alt="角色跳跃" class="modal-image" />
+                    <p>角色跳跃</p>
+                </div>
+                <div class="image-row">
+                    <img src="image/player-hurt.png" alt="角色受伤" class="modal-image" />
+                    <p>角色受伤</p>
+                </div>
+                <div class="image-row">
+                    <img src="image/player-climb.png" alt="角色攀爬" class="modal-image" />
+                    <p>角色攀爬</p>
+                </div>
+            </div>
+            <h3>敌人展示</h3>
+            <div class="modal-images">
+                <div class="image-row">
+                    <img src="image/frog-idle.png" alt="青蛙静止" class="modal-image" />
+                    <p>青蛙静止</p>
+                </div>
+                <div class="image-row">
+                    <img src="image/frog-jump.png" alt="青蛙跳跃" class="modal-image" />
+                    <p>青蛙跳跃</p>
+                </div>
+                <div class="image-row">
+                    <img src="image/eagle-attack.png" alt="鹰攻击" class="modal-image" />
+                    <p>鹰攻击</p>
+                </div>
+                <div class="image-row">
+                    <img src="image/oposum.png" alt="负鼠" class="modal-image" />
+                    <p>负鼠</p>
+                </div>
+                <div class="image-row">
+                    <img src="image/Tank_Big_Boss.png" alt="坦克大Boss" class="modal-image" />
+                    <p>坦克大Boss</p>
+                </div>
+            </div>
+            <h3>收集界面</h3>
+            <div class="modal-images">
+                <div class="image-row">
+                    <img src="image/Collect_Effect.png" alt="收集效果" class="modal-image" />
+                    <p>收集效果</p>
+                </div>
+                <div class="image-row">
+                    <img src="image/gem.png" alt="宝石" class="modal-image" />
+                    <p>宝石</p>
+                </div>
+                <div class="image-row">
+                    <img src="image/cherry.png" alt="樱桃" class="modal-image" />
+                    <p>樱桃</p>
+                </div>
+            </div>
+            <h3>UI界面</h3>
+            <div class="modal-images">
+                <div class="image-row">
+                    <img src="image/Overworld_tiles_Padded.png" alt="关卡用户界面" class="modal-image" />
+                    <p>关卡用户界面</p>
+                </div>
+                <div class="image-row">
+                    <img src="image/UI_Heart.png" alt="角色血条" class="modal-image" />
+                    <p>角色血条</p>
+                </div>
+                <div class="action-buttons">
+                    <button onclick="window.open('https://github.com/RuiqiLuo/Universe', '_blank')">查看源代码</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="universeUnityModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Universe</h2>
+            <p>这是一个模仿万有引力的模型，展示了天体间的相互作用。</p>
+            <p>可以改变万有引力公式中的平方。</p>
+            <div class="image-container">
+                <img src="image/Universe.jpg" alt="Universe" class="modal-image" />
+                <div class="action-buttons">
+                    <button onclick="window.open('https://github.com/RuiqiLuo/Universe', '_blank')">查看源代码</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="universeUnityModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Universe</h2>
+            <p>这是一个模仿万有引力的模型，展示了天体间的相互作用。</p>
+            <p>可以改变万有引力公式中的平方。</p>
+            <div class="image-container">
+                <img src="image/Universe.jpg" alt="Universe" class="modal-image" />
+                <div class="action-buttons">
+                    <button
+                        onclick="window.open('https://github.com/RuiqiLuo/Fox-Jumping-Game',  '_blank')">查看源代码</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="3DForstGameModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>3DForstGame</h2>
+            <div style="position: relative; width: 100%; padding-top: 56.25%;">
+                <iframe src="https://player.bilibili.com/player.html?bvid=BV1qL1cYDEtE" scrolling="no" border="0"
+                    frameborder="no" framespacing="0" allowfullscreen="true"
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+            </div>
+            <p>开发界面</p>
+            <div class="modal-images">
+                <img src="image/interface.png" alt="开发界面" class="modal-image" />
+                <p>素材</p>
+                <img src="image/forest(1).png" alt="素材图片 1" class="modal-image" />
+                <img src="image/forest(2).png" alt="素材图片 2" class="modal-image" />
+                <img src="image/forest(3).png" alt="素材图片 3" class="modal-image" />
+                <img src="image/forest(5).png" alt="素材图片 5" class="modal-image" />
+                <img src="image/forest(6).png" alt="素材图片 6" class="modal-image" />
+                <img src="image/forest(7).png" alt="素材图片 7" class="modal-image" />
+            </div>
+            <div class="action-buttons">
+                <button
+                    onclick="window.open('https://assetstore.unity.com/packages/essentials/tutorial-projects/book-of-the-dead-environment-hdrp-121175', '_blank')">链接按钮</button>
+            </div>
+        </div>
+    </div>
+    <div id="wordModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>背单词工具</h2>
+            <p>这是一个高效的背单词工具，帮助用户通过各种练习方式记忆单词。</p>
+            <div class="action-buttons">
+                <button onclick="window.open('https://ruiqiluo.github.io/word/',  '_blank')">使用工具</button>
+                <button onclick="window.open('https://github.com/RuiqiLuo/word',  '_blank')">查看源代码</button>
+            </div>
+        </div>
+    </div>
+    <div id="scheduleModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Review Schedule</h2>
+            <p>复习计划工具，帮助你高效学习。</p>
+            <div class="image-container">
+                <img src="image/Schedule.jpg" alt="Review Schedule Image" class="modal-image" />
+            </div>
+            <div class="action-buttons">
+                <button onclick="window.open('https://ruiqiluo.github.io/ReviewSchedule/',  '_blank')">使用工具</button>
+                <button onclick="window.open('https://github.com/RuiqiLuo/ReviewSchedule',  '_blank')">查看源代码</button>
+            </div>
+        </div>
+    </div>
+    <div id="vaeModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>VAE 科研项目</h2>
+            <p>生成网络科研项目。</p>
+            <div class="action-buttons">
+                <button disabled>暂无相关按钮</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            modal.style.display = "block";
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).style.display = "none";
+        }
+
+        document.querySelectorAll('.close').forEach(closeButton => {
+            closeButton.addEventListener('click', function () {
+                const modalId = this.parentElement.parentElement.id;
+                closeModal(modalId);
+            });
+        });
+
+        function showComputer() {
+            const projectsSection = document.querySelector('.projects');
+            projectsSection.innerHTML = `
+                <div class="project" onclick="openModal('cModal')">
+                    <h2>C 语言</h2>
+                    <p>关于 C 语言的相关内容。</p>
+                    <img src="image/c.svg" alt="C 语言图标" style="width:30px;height:30px;">
+                </div>
+                <div class="project" onclick="openModal('javaModal')">
+                    <h2>Java</h2>
+                    <p>关于 Java 的相关内容。</p>
+                    <img src="image/java.svg" alt="Java 图标" style="width:30px;height:30px;">
+                </div>
+                <div class="project" onclick="openModal('pythonModal')">
+                    <h2>Python</h2>
+                    <p>关于 Python 的相关内容。</p>
+                    <img src="image/python.svg" alt="Python 图标" style="width:30px;height:30px;">
+                </div>
+                <div class="project" onclick="openModal('unityModal')">
+                    <h2>Unity</h2>
+                    <p>关于 Unity 的相关内容。</p>
+                    <img src="image/unity.svg" alt="Unity 图标" style="width:30px;height:30px;">
+                </div>
+            `;
+            document.querySelectorAll('.platform-button').forEach(button => button.classList.remove('highlighted-platform-button'));
+            document.querySelector('.platform-button[onclick="showComputer()"]').classList.add('highlighted-platform-button');
+            document.getElementById('backButton').style.display = 'block';
+        }
+
+        function showAndroid() {
+            const projectsSection = document.querySelector('.projects');
+            projectsSection.innerHTML = '<p>安卓端暂未有相关项目展示。</p>';
+            document.querySelectorAll('.platform-button').forEach(button => button.classList.remove('highlighted-platform-button'));
+            document.querySelector('.platform-button[onclick="showAndroid()"]').classList.add('highlighted-platform-button');
+            document.getElementById('backButton').style.display = 'block';
+        }
+
+        function showWeb() {
+            const projectsSection = document.querySelector('.projects');
+            projectsSection.innerHTML = `
+                <div class="project" onclick="openModal('wordModal')">
+                    <h2>背单词工具</h2>
+                    <p>高效背单词的工具。</p>
+                </div>
+                <div class="project" onclick="openModal('scheduleModal')">
+                    <h2>日期复习</h2>
+                    <p>根据艾宾浩斯遗忘曲线辅助高效的复习</p>
+                            </div>
+            <div class="project" onclick="openModal('vaeModal')">
+                <h2>VAE 科研项目</h2>
+                <p>生成网络科研项目。</p>
+            </div>
+            <div class="project" onclick="openModal('otherModal')">
+                <h2>其他项目</h2>
+                <p>描述其他项目的内容。</p>
+            </div>
+        `;
+            document.querySelectorAll('.platform-button').forEach(button => button.classList.remove('highlighted-platform-button'));
+            document.querySelector('.platform-button[onclick="showWeb()"]').classList.add('highlighted-platform-button');
+            document.getElementById('backButton').style.display = 'block';
+        }
+
+        document.getElementById('backButton').addEventListener('click', function () {
+            const projectsSection = document.querySelector('.projects');
+            projectsSection.innerHTML = '';
+            this.style.display = 'none';
+        });
+    </script>
+</body>
+
+</html>
